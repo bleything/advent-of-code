@@ -62,8 +62,27 @@ if __FILE__ == $0
   s = Solution.new
 
   input = File.read("input.txt").split(/,/).map(&:to_i)
-  input[1] = 12
-  input[2] = 2
 
-  puts s.solve(input)[0]
+  part_one = input.dup
+  part_one[1] = 12
+  part_one[2] = 2
+
+  puts "part one: #{s.solve(part_one)[0]}"
+
+  part_two = []
+
+  catch :done do
+    (0..99).each do |noun|
+      (0..99).each do |verb|
+        part_two = input.dup
+        part_two[1] = noun
+        part_two[2] = verb
+
+        result = s.solve(part_two)[0]
+        throw :done if result == 19690720
+      end
+    end
+  end
+
+  puts "part two: #{part_two[1]}#{part_two[2]}"
 end

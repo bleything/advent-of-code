@@ -62,5 +62,8 @@ if __FILE__ == $0
   s = Solution.new
 
   input = File.read("input.txt").split(/,/).map(&:to_i)
+  input[1] = 12
+  input[2] = 2
+
   puts s.solve(input)[0]
 end

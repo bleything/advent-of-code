@@ -3,18 +3,22 @@
 require 'set'
 
 class Solution
+  attr_accessor :part1, :part2
 
   def initialize(first, second)
     @first_path = first.split(/,/)
     @second_path = second.split(/,/)
 
-    @map = Hash.new {|h, k| h[k] = Set.new }
+    @map = Hash.new {|h, k| h[k] = Hash.new }
     @intersections = []
   end
 
   def traverse(name, path)
     x = 0
     y = 0
+    steps = 0
+
+    last_coords = ""
 
     path.each do |step|
       dir = step[0]
@@ -46,9 +50,12 @@ class Solution
         next if x == 0 and y == 0
 
         coords = "#{x},#{y}"
-        @map[coords] << name
+        steps += 1 unless coords == last_coords
+        last_coords = coords
 
-        if @map[coords].size > 1
+        @map[coords][name] ||= steps
+
+        if @map[coords].keys.size > 1
           @intersections << coords
         end
       end
@@ -57,7 +64,6 @@ class Solution
 
   def calc_distance(coords)
     x, y = coords.split(/,/).map(&:to_i)
-
     return (0 - x).abs + (0 - y).abs
   end
 
@@ -66,7 +72,9 @@ class Solution
     traverse :first, @first_path
     traverse :second, @second_path
 
-    return @intersections.map {|i| calc_distance i }.sort.first
+    @part1 = @intersections.map {|i| calc_distance i }.sort.first
+    @part2 = @intersections.map {|i| @map[i].values.inject(0) {|s,e| s + e} }.sort.first
+
   end
 
 end
@@ -76,5 +84,8 @@ if __FILE__ == $0
   first, second = input.lines
 
   s = Solution.new(first, second)
-  puts s.solve!
+  s.solve!
+
+  puts "part one: #{s.part1}"
+  puts "part two: #{s.part2}"
 end

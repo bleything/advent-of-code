@@ -8,8 +8,12 @@ class TestSolution < Test::Unit::TestCase
   end
 
   def test_examples
-    assert  @solution.valid?(111111)
-    assert !@solution.valid?(223450)
-    assert !@solution.valid?(123789)
+    assert  @solution.valid_part_one?(111111)
+    assert !@solution.valid_part_one?(223450)
+    assert !@solution.valid_part_one?(123789)
+
+    assert  @solution.valid_part_two?(112233)
+    assert !@solution.valid_part_two?(123444)
+    assert  @solution.valid_part_two?(111122)
   end
 end

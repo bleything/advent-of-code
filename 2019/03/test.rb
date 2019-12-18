@@ -32,4 +32,15 @@ class TestSolution < Test::Unit::TestCase
     assert_equal 410, solution.part2
   end
 
+  def test_solution
+    input = File.read("input.txt")
+    first, second = input.lines
+
+    s = Solution.new first, second
+    s.solve!
+
+    assert_equal 352, s.part1
+    assert_equal 43848, s.part2
+  end
+
 end

@@ -19,4 +19,13 @@ class TestSolution < Test::Unit::TestCase
     assert_equal 966, @solution.part_two(1969)
     assert_equal 50346, @solution.part_two(100756)
   end
+
+  def test_solution
+    @solution = Solution.new(File.read("input.txt"))
+    @solution.solve!
+
+    assert_equal 3429947, @solution.part1
+    assert_equal 5142043, @solution.part2
+  end
+
 end

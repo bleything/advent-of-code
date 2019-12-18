@@ -16,4 +16,15 @@ class TestSolution < Test::Unit::TestCase
     assert !@solution.valid_part_two?(123444)
     assert  @solution.valid_part_two?(111122)
   end
+
+  def test_solution
+    a, b = File.read("input.txt").split("-")
+
+    s = Solution.new(a, b)
+    s.solve!
+
+    assert_equal 1660, s.part1
+    assert_equal 1135, s.part2
+  end
+
 end

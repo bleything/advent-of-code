@@ -14,4 +14,13 @@ class TestSolution < Test::Unit::TestCase
     assert_equal [30, 1, 1, 4, 2, 5, 6, 0, 99], Intcode.new([1, 1, 1, 4, 99, 5, 6, 0, 99]).run!
   end
 
+  def test_solution
+    input = File.read("input.txt")
+    s = Solution.new(input.split(/,/).map(&:to_i))
+    s.solve!
+
+    assert_equal 9706670, s.part1
+    assert_equal 2552, s.part2
+  end
+
 end

@@ -8,9 +8,10 @@ class TestSolution < Test::Unit::TestCase
   end
 
   def test_examples
-    assert_equal [2, 0, 0, 0, 99], @solution.solve([1, 0, 0, 0, 99])
-    assert_equal [2, 3, 0, 6, 99], @solution.solve([2, 3, 0, 3, 99])
-    assert_equal [2, 4, 4, 5, 99, 9801], @solution.solve([2, 4, 4, 5, 99, 0])
-    assert_equal [30, 1, 1, 4, 2, 5, 6, 0, 99], @solution.solve([1, 1, 1, 4, 99, 5, 6, 0, 99])
+    assert_equal [2, 0, 0, 0, 99], Intcode.new([1, 0, 0, 0, 99]).run!
+    assert_equal [2, 3, 0, 6, 99], Intcode.new([2, 3, 0, 3, 99]).run!
+    assert_equal [2, 4, 4, 5, 99, 9801], Intcode.new([2, 4, 4, 5, 99, 0]).run!
+    assert_equal [30, 1, 1, 4, 2, 5, 6, 0, 99], Intcode.new([1, 1, 1, 4, 99, 5, 6, 0, 99]).run!
   end
+
 end

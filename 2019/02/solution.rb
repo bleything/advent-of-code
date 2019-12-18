@@ -1,88 +1,52 @@
 #!/usr/bin/env ruby
 
-class Computer
-  attr_reader :state
+# allows you to load files from <year>/lib. delete if you don't need it
+$: << File.expand_path(__FILE__ + "/../../lib")
 
-  OPCODES = {
-    1  => Proc.new {|a,b| a + b},
-    2  => Proc.new {|a,b| a * b},
-    99 => Proc.new { @running = false }
-  }
-
-  def initialize(program)
-    @state = program
-    @ptr = 0
-    @running = true
-  end
-
-  def run!
-    while @running
-      step @state[@ptr]
-    end
-
-    return @state
-  end
-
-  def step(opcode)
-    if opcode == 99
-      @running = false
-      return
-    end
-
-    a_addr = @state[@ptr + 1]
-    b_addr = @state[@ptr + 2]
-    r_addr = @state[@ptr + 3]
-
-    # p @state
-    # puts "p%02i o%02i a%02i b%02i"  % [@ptr, opcode, a_addr, b_addr]
-
-    a = @state[a_addr]
-    b = @state[b_addr]
-
-    case opcode
-    when 1
-           @state[r_addr] = a + b
-    when 2
-           @state[r_addr] = a * b
-    end
-
-    @ptr += 4
-  end
-end
+require 'intcode'
 
 class Solution
+  attr_accessor :program
+  attr_reader :part1, :part2
 
-  def solve(program)
-    Computer.new(program).run!
+  def initialize(program = [99])
+    @program = program
+  end
+
+  def solve!
+    part1_program = @program.dup
+    part1_program[1] = 12
+    part1_program[2] = 2
+
+    result = Intcode.new(part1_program).run!
+    @part1 = result[0]
+
+    part2_program = []
+
+    catch :done do
+      (0..99).each do |noun|
+        (0..99).each do |verb|
+          part2_program = @program.dup
+          part2_program[1] = noun
+          part2_program[2] = verb
+
+          result = Intcode.new(part2_program).run!
+          throw :done if result[0] == 19690720
+        end
+      end
+    end
+
+    @part2 = part2_program[1,2].join.to_i
   end
 
 end
 
 if __FILE__ == $0
-  s = Solution.new
+  input = File.read("input.txt")
 
-  input = File.read("input.txt").split(/,/).map(&:to_i)
+  s = Solution.new(input.split(/,/).map &:to_i)
+  s.solve!
 
-  part_one = input.dup
-  part_one[1] = 12
-  part_one[2] = 2
-
-  puts "part one: #{s.solve(part_one)[0]}"
-
-  part_two = []
-
-  catch :done do
-    (0..99).each do |noun|
-      (0..99).each do |verb|
-        part_two = input.dup
-        part_two[1] = noun
-        part_two[2] = verb
-
-        result = s.solve(part_two)[0]
-        throw :done if result == 19690720
-      end
-    end
-  end
-
-  puts "part two: #{part_two[1]}#{part_two[2]}"
+  puts "part one: #{s.part1}"
+  puts "part two: #{s.part2}"
 end

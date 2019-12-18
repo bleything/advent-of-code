@@ -4,7 +4,6 @@ require './solution'
 class TestSolution < Test::Unit::TestCase
 
   def test_part_one_examples
-
     first = "R8,U5,L5,D3"
     second = "U7,R6,D4,L4"
     solution = Solution.new first, second

@@ -68,13 +68,11 @@ class Solution
   end
 
   def solve!
-
     traverse :first, @first_path
     traverse :second, @second_path
 
     @part1 = @intersections.map {|i| calc_distance i }.sort.first
     @part2 = @intersections.map {|i| @map[i].values.inject(0) {|s,e| s + e} }.sort.first
-
   end
 
 end

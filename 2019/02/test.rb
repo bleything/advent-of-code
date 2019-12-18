@@ -3,10 +3,6 @@ require './solution'
 
 class TestSolution < Test::Unit::TestCase
 
-  def setup
-    @solution = Solution.new
-  end
-
   def test_examples
     assert_equal [2, 0, 0, 0, 99], Intcode.new([1, 0, 0, 0, 99]).run!
     assert_equal [2, 3, 0, 6, 99], Intcode.new([2, 3, 0, 3, 99]).run!
